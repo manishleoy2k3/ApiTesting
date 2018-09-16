@@ -2,6 +2,7 @@ package com.api.framework.utility.files;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
@@ -12,13 +13,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-public class ReadExcel {
+public class UpdateExcel {
 
 	private Workbook workBook = null;
 	private Sheet workSheet = null;
-	private String[][] data;
-	private Sheet sheet;
-	
+	private Row row;
+	private Cell cell;
+		
 	public Sheet getSheet(String filePath, String sheetName) {
 	
 		File file = new File(filePath);
@@ -32,67 +33,24 @@ public class ReadExcel {
 		return workSheet;
 	}
 	
-	public String[][] getExcelData(String filePath, String sheetName) {
-		try{
-			sheet = getSheet(filePath, sheetName);
-			int totalRows = sheet.getLastRowNum();
-			int totalColumns = sheet.getRow(0).getLastCellNum();
-			data = new String[totalRows + 1][totalColumns];
-			
-			for(int rowCount =0; rowCount <= totalRows; rowCount++) {
-				for(int columnCount = 0; columnCount < totalColumns; columnCount++) {
-					data[rowCount][columnCount] = getCellValue(sheet.getRow(rowCount).getCell(columnCount));
-				}
-			}
-			return data;
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
+	public void setCellData(String filePath, String sheetName, String result, int rowNum, int colNum) {
+		workSheet = getSheet(filePath, sheetName);
+		row = workSheet.getRow(rowNum);
+		cell = row.getCell(colNum);
+		if(cell == null) {
+			cell = row.createCell(colNum);
+			cell.setCellValue(result);
+		} else {
+			cell.setCellValue(result);
 		}
-	}
-
-	public String[][] getExcelData(String filePath, String sheetName, String key) {
-		try{
-			sheet = getSheet(filePath, sheetName);
-			int totalRows = sheet.getLastRowNum();
-			int totalColumns = sheet.getRow(0).getLastCellNum();
-			data = new String[totalRows][totalColumns];
-			
-			for(int rowCount =1; rowCount <= totalRows; rowCount++) {
-				for(int columnCount = 0; columnCount < totalColumns; columnCount++) {
-					if(sheet.getRow(rowCount).getCell(0).getStringCellValue().equalsIgnoreCase(key)) {
-						data[rowCount - 1][columnCount] = getCellValue(sheet.getRow(rowCount).getCell(columnCount));
-					}
-					
-				}
-			}
-			return data;
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public String getCellData(int rowNum, int colNum, String sheetName) throws Exception {
-		Row row;
-		Cell cell;
 		try {
-			row = workSheet.getRow(rowNum);
-			if(row == null) {
-				row = workSheet.createRow(rowNum);
-				cell = row.getCell(colNum);
-				if(cell == null) {
-					cell = row.createCell(colNum);
-				}
-			} else {
-				cell = row.getCell(colNum);
-				if(cell == null) {
-					cell = row.createCell(colNum);
-				}
-			}
-			return cell.getStringCellValue();
+			FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+			workBook.write(fileOutputStream);
+			fileOutputStream.flush();
+			fileOutputStream.close();
+			
 		} catch(Exception e) {
-			return "";
+			e.printStackTrace();
 		}
 	}
 	
