@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.api.framework.constants.FrameworkConstants;
+import com.aventstack.extentreports.Status;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -40,6 +42,7 @@ public class JsonHandler {
 	// writes JSON content to File
 	public void writeJsonToFile(JSONObject jsonObject, String fileName) {
 		writeJsonToFile(jsonObject.toJSONString(), fileName);
+		FrameworkConstants.REPORTNODE.log(Status.PASS, jsonObject.toJSONString());
 	}
 
 	// writes JSON string to File
@@ -47,12 +50,13 @@ public class JsonHandler {
 		try {
 			FileWriter file = new FileWriter(fileName);
 			file.write(jsonString);
+			//file.close();
 			logger.info("Json value written to File: " + jsonString);
-			//TODO: add extent report node for PASS here
+			FrameworkConstants.REPORTNODE.log(Status.PASS, jsonString);
 		} catch(Exception e) {
 			logger.error("Exception found: "+ e.getMessage());
 			logger.debug(e.getStackTrace());
-			//TODO: add extent report node for FAIL here
+			FrameworkConstants.REPORTNODE.log(Status.FAIL, e.getMessage());
 		}
 	}
 	
@@ -62,11 +66,11 @@ public class JsonHandler {
 		try {
 			jsonvalue = JsonPath.using(configuration).parse(readJsonFromFile(fileName)).read("$." + jsonPath).toString();
 			logger.info("Json value read from File: " + jsonvalue);
-			//TODO: add extent report node for PASS here
+			FrameworkConstants.REPORTNODE.log(Status.PASS, jsonPath);
 		} catch(Exception e) {
 			logger.error("Exception found: "+ e.getMessage());
 			logger.debug(e.getStackTrace());
-			//TODO: add extent report node for FAIL here
+			FrameworkConstants.REPORTNODE.log(Status.FAIL, e.getMessage());
 		}
 		return jsonvalue;
 	}
@@ -80,7 +84,7 @@ public class JsonHandler {
 		} catch(Exception e) {
 			logger.error("Exception found: "+ e.getMessage());
 			logger.debug(e.getStackTrace());
-			//TODO: add extent report node for FAIL here
+			FrameworkConstants.REPORTNODE.log(Status.FAIL, e.getMessage());
 		}
 		return jsobObject.toJSONString();
 	}

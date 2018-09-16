@@ -75,7 +75,7 @@ public class ExtentManager {
 		FrameworkConstants.REPORTNODE = FrameworkConstants.TESTCASE.createNode(stepDescription);
 	}
 	
-	public void endReport() {
+	/*public void endReport() {
 		extent.flush();
-	}
+	}*/
 }
