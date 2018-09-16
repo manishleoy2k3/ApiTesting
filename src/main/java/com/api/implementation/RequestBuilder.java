@@ -9,7 +9,7 @@ public class RequestBuilder {
 
 	private static RequestBuilder builder = null;
 	private static RequestSpecBuilder instance = null;
-	private static  Logger logger = Logger.getLogger(RequestBuilder.class);
+	private static Logger logger = Logger.getLogger(RequestBuilder.class);
 	
 		
 	protected RequestBuilder() {

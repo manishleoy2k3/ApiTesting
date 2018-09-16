@@ -20,11 +20,11 @@ public class RunTestNG {
 		String absolutePath = file.getAbsolutePath();
 		List<String> suite = new ArrayList<String>();
 		
-		TestListener testListener = new TestListener();
-		testNG.addListener((ITestListener)testListener);
+		//TestListener testListener = new TestListener();
+		//testNG.addListener((ITestListener)testListener);
 		suite.add(absolutePath);
 		testNG.setTestSuites(suite);
 		testNG.run();
-		extentManager.endReport();
+		//extentManager.endReport();
 	}
 }

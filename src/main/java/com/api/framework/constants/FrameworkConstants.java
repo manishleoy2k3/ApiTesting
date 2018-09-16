@@ -1,7 +1,9 @@
 package com.api.framework.constants;
 
+import java.io.File;
 import java.util.HashMap;
 
+import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
 public class FrameworkConstants {
@@ -19,4 +21,9 @@ public class FrameworkConstants {
 	public static ExtentTest TESTCASE;
 	public static ExtentTest REPORTNODE;
 	public static Integer STEP_COUNTER = 0;
+	public static String SCREENSHOT_LOCATION = TMP + File.separator + "screenshots" + File.separator;
+	public static HashMap<String, String> APPLICATION_CONFIG = new HashMap<String, String>();
+	public static HashMap<String, String> DATABASE_CONFIG = new HashMap<String, String>();
+	public static HashMap<String, String> DATASHEET_CONFIG = new HashMap<String, String>();
+	
 }
